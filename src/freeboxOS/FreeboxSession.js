@@ -47,7 +47,7 @@ function auth(callback) {
 	let url = 'http://mafreebox.freebox.fr/api/v6/login/authorize/'
 	let data = {
 		"app_id":"hb.fbx-home",
-		"app_name":"Homebridge-Freebox",
+		"app_name":"Freebox-security-API",
 		"app_version":"1.0",
 		"device_name":"server"
 	}

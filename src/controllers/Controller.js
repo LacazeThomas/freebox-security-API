@@ -1,9 +1,7 @@
 let Alarm = require('./Alarm')
 let Sensor = require('./Sensor')
-let Logs = require('./Logs')
 let FreeboxRequest = require('../freeboxOS/FreeboxRequest')
 let HomebridgeConf = require('../homebridge/HomebridgeConf')
-let homebridgeUtils = require('../homebridge/HomebridgeUtils')
 let credentials = require('../freeboxOS/Credentials')
 
 module.exports = function() {
@@ -75,16 +73,6 @@ module.exports = function() {
     // Homebridge
     // ------------
 
-    // > [GET] host:port/api/homebridge/restart
-    // Simply restart homebridge services via a kill command on the pm2
-    // homebridge process.
-    this.handleHomebridgeRestart = function(response) {
-        homebridgeUtils.restart((success) => {
-            response.status(200)
-            response.send(success)
-        })
-    }
-
     // > [GET] host:port/api/homebridge/conf
     // Load a homebridge configuration file with the available nodes.
     // Returns a boolean value as a success value.
@@ -143,17 +131,6 @@ module.exports = function() {
             cameraEnabled: true,
         }
         homebridgeConf.setup(config, (success) => {
-            response.status(200)
-            response.send(success)
-        })
-    }
-
-    // > [GET] host:port/api/homebridge/clean
-    // Removes the homebridge persist file, to be able ro re-pair with
-    // a new HomeKit app (attached to another iCloud account).
-    // Returns a boolean value as a success value.
-    this.handleHomebridgeClean = function(response) {
-        homebridgeUtils.clean((success) => {
             response.status(200)
             response.send(success)
         })
@@ -271,66 +248,6 @@ module.exports = function() {
         this.alarm.getAlarmTarget((target) => {
             response.status(200)
             response.send(target.toString())
-        })
-    }
-
-
-    // ------------
-    // Logs
-    // ------------
-
-    // These are various methods to get logs for troubleshooting purpose.
-
-    // > [GET] host:port/api/log/server
-    this.handleServerLogs = function(response) {
-        let logs = new Logs()
-        logs.getServerLogs((logs) => {
-            response.status(200)
-            response.send(logs)
-        })
-    }
-
-    // > [GET] host:port/api/log/homebridge
-    this.handleHomebridgeLogs = function(response) {
-        let logs = new Logs()
-        logs.getHomebridgeLogs((logs) => {
-            response.status(200)
-            response.send(logs)
-        })
-    }
-
-    // > [GET] host:port/api/log/server/error
-    this.handleServerErrorLogs = function(response) {
-        let logs = new Logs()
-        logs.getServerErrorLogs((logs) => {
-            response.status(200)
-            response.send(logs)
-        })
-    }
-
-    // > [GET] host:port/api/log/homebridge/error
-    this.handleHomebridgeErrorLogs = function(response) {
-        let logs = new Logs()
-        logs.getHomebridgeErrorLogs((logs) => {
-            response.status(200)
-            response.send(logs)
-        })
-    }
-
-    // > [GET] host:port/api/log/clean
-    this.handleCleanLogs = function(response) {
-        let logs = new Logs()
-        logs.clearLogs((success) => {
-            response.status(200)
-            response.send(success)
-        })
-    }
-
-    this.handleGetVersion = function(response) {
-        let logs = new Logs()
-        logs.getLastCommitId((id) => {
-            response.status(200)
-            response.send(id.toString())
         })
     }
 }

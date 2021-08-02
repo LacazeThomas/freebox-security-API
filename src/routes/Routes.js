@@ -54,12 +54,6 @@ module.exports = function() {
                 }
             })
         })
-        self.router.get('/homebridge/restart', function(req, res) {
-            self.controller.handleHomebridgeRestart(res)
-        })
-        self.router.get('/homebridge/conf', function(req, res) {
-            self.controller.handleHomebridgeConf(res)
-        })
         self.router.get('/homebridge/conf/alarm', function(req, res) {
             self.controller.handleHomebridgeConfWithAlarm(res)
         })
@@ -68,9 +62,6 @@ module.exports = function() {
         })
         self.router.get('/homebridge/conf/full', function(req, res) {
             self.controller.handleHomebridgeConfFull(res)
-        })
-        self.router.get('/homebridge/clean', function(req, res) {
-            self.controller.handleHomebridgeClean(res)
         })
         self.router.get('/refresh/:timeout', function(req, res) {
             let timeout = parseInt(req.params.timeout, 10)
