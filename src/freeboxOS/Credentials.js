@@ -1,7 +1,7 @@
 const fs = require('fs') 
 //const envfile = require('envfile')
 
-let credFilePath = './src/.store'
+let credFilePath = '/usr/src/app/credentials/store'
 
 module.exports.update = function(token, track, callback) {
 	if(fs.existsSync(credFilePath)) {
