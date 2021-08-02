@@ -48,7 +48,7 @@ The Freebox home api is a very complex API, with many endpoints, and many data a
 The point of this project is to build a minimalist version of these endpoints to be able to simply communicate the states of your freebox items to other apps and services such as Homebridge.
 The main purpose is indeed to build a bridge between Homebridge and the Freebox Home API.
 
-## Abialable endpoints
+## Available endpoints
 Few endpoint are exposed in this API such as :
 
 | Endpoint                   | Description                                                                                       |
