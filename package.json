@@ -4,22 +4,21 @@
   "description": "A freebox bridge for homebridge compatibility of the Freebox Pack Secu.",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "homebridge-install": "./homebridge-install"
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Que20/freebox-home-api.git"
+    "url": "git+https://github.com/LacazeThomas/freebox-security-API.git"
   },
   "keywords": [
     "Freeebox"
   ],
-  "author": "Kevin Maarek",
+  "author": "Thomas LACAZE",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Que20/freebox-home-api/issues"
+    "url": "https://github.com/LacazeThomas/freebox-security-API/issues"
   },
-  "homepage": "https://github.com/Que20/freebox-home-api#readme",
+  "homepage": "https://github.com/LacazeThomas/freebox-security-API#readme",
   "dependencies": {
     "express": "4.16.4",
     "request": "2.88.0",
