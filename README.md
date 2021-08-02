@@ -1,62 +1,46 @@
+# freebox-security-API
+A NodeJS gateway to interface the Freebox Home API and curl action, setting up a minimalist version of the Freebox Home APIs.
 
-<p align="center">
-  <img src="https://github.com/fbx/homebridge-freebox-home/raw/master/logo.png" data-canonical-src="https://github.com/fbx/homebridge-freebox-home/raw/master/logo.png" width="232" height="120" />
-</p>
-
-# homebridge-freebox-home
-A NodeJS gateway to interface the Freebox Home API and a Homebridge server, setting up a minimalist version of the Freebox Home APIs.
-
-### What it does ?
-The homebridge-freebox-home, once started will require access to your freebox as a regular app (you need to allow it through the screen of your Freebox Server) and will setup a homebridge configuration file with your Freebox's connected and supported devices.
-It currently supports all the sensors (door/window and motion), the security system and the camera.
-
-### Usage
-
-- Clone the repo
-```
-git clone https://github.com/fbx/homebridge-freebox-home.git
-```
-- Go the the homebridge-freebox-home directory
-```
-cd homebridge-freebox-home
-```
-- First install dependencies
-```
-npm install
-npm run homebridge-install
-```
-- Start Homebridge
-
-You can simply start Homebridge by typing :
-```
-homebridge
-```
-We recommand using a node process manager such as `pm2`.
-```
-pm2 start /usr/local/bin/homebridge
-```
-- Then start the server
+## Usage Docker version
 
 ```
-npm run start
+freeboxapi:
+  image: thomaslacaze/freebox-security-api
+  container_name: freeboxAPI
+  volumes:
+    - $PWD/freeboxAPI:/usr/src/app/credentials
+  restart: unless-stopped
+  environment: 
+    - TZ=${TZ}
+    - PUID=1000
+    - PGID=1000
+  network_mode: host #IMPORTANT due to security, allow only localhost domain
 ```
 
-That will automatically setup the environement, pair to the local freebox server and build the homebridge config file.
-So you might want to stay near the freebox to allow the app through the LCD screen.
+## Configuration with homeassistant
 
-- Grant access to the server *via* Freebox OS
+Calls to the motion sensor API work. But my sensor doesn't work anymore 
 
-Go into the preference of FreeboxOS to allow the app to access you home items and camera :
-`Paramètres de la Freebox` > `Gestion des accès` and allow the `homebridge-freebox-home` app to access *Home* and *Camera* (you can disable other unused rights).
-
-- Create the Homebridge conf file
-
-In your browser go to url : `http://{host}:8888/api/homebridge/conf`replacing {host} the ip of the host machine.
-
-Make sure it returns `true`, then simply restart your Homebridge instance. If you are using `pm2`, simply type
 ```
-pm2 restart Homebridge
+switch:
+  - platform: command_line
+    switches:
+      alarm:
+        command_on: "curl -X GET http://localhost:8888/api/alarm/main"
+        command_off: "curl -X GET http://localhost:8888/api/alarm/home"
+        command_state: "curl -X GET http://localhost:8888/api/alarm/target"
+        value_template: '{{ value == "1" }}'
+
+binary_sensor:
+  - platform: command_line
+    command: "curl -X GET http://localhost:8888/api/node/59"
+    name: "sensor door"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: "door"        
 ```
+
+To get your node id make a `curl -X GET http://localhost:8888/api/node/list`
 
 ## The actual Freebox API
 The Freebox home api is a very complex API, with many endpoints, and many data and information. These data are supposed to be used in clients for the Home features of the Freebox Delta such as the Freebox companion mobile app, used to manage and configure every aspect of the Freebox Home Security items (camera, sensors, alarm...).
@@ -67,12 +51,12 @@ The main purpose is indeed to build a bridge between Homebridge and the Freebox 
 ## Abialable endpoints
 Few endpoint are exposed in this API such as :
 
-| Endpoint                 | Description                                                                              |
-|--------------------------|------------------------------------------------------------------------------------------|
-| /api/node/{id}           | Will return the state of a specified node right now.*                                    |
-| /api/homebridge/conf     | Use this endpoint to manually request a configuration file for homebridge.               |
-| /api/homebridge/conf/alarm| Use this endpoint to manually request a configuration file for homebridge that inclues the alarm.|
-| /api/homebridge/restart/| Simply restart homebridge.|
+| Endpoint                   | Description                                                                                       |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| /api/node/{id}             | Will return the state of a specified node right now.*                                             |
+| /api/homebridge/conf       | Use this endpoint to manually request a configuration file for homebridge.                        |
+| /api/homebridge/conf/alarm | Use this endpoint to manually request a configuration file for homebridge that inclues the alarm. |
+| /api/homebridge/restart/   | Simply restart homebridge.                                                                        |
 
 Check the wiki for a complete documentation.
 
