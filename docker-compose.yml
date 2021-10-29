@@ -1,0 +1,13 @@
+version: '2.1'
+services:
+    freeboxapi:
+      image: thomaslacaze/freebox-security-api
+      container_name: freeboxAPI
+      volumes:
+        - /home/thomas/freeboxAPI:/usr/src/app/credentials
+        - /etc/localtime:/etc/localtime:ro
+      restart: unless-stopped
+      environment: 
+        - PUID=1000
+        - PGID=1000
+      network_mode: host

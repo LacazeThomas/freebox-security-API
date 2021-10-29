@@ -1,7 +1,6 @@
 let Alarm = require('./Alarm')
 let Sensor = require('./Sensor')
 let FreeboxRequest = require('../freeboxOS/FreeboxRequest')
-let HomebridgeConf = require('../homebridge/HomebridgeConf')
 let credentials = require('../freeboxOS/Credentials')
 
 module.exports = function() {
@@ -70,73 +69,6 @@ module.exports = function() {
     }
 
     // ------------
-    // Homebridge
-    // ------------
-
-    // > [GET] host:port/api/homebridge/conf
-    // Load a homebridge configuration file with the available nodes.
-    // Returns a boolean value as a success value.
-    this.handleHomebridgeConf = function(response) {
-        let homebridgeConf = new HomebridgeConf(this.sensor)
-        let config = {
-            alarmEnabled: true,
-            cameraEnabled: true,
-        }
-        homebridgeConf.setup(config, (success) => {
-            response.status(200)
-            response.send(success)
-        })
-    }
-
-    // > [GET] host:port/api/homebridge/conf/alarm
-    // Load a homebridge configuration file with the available nodes,
-    // including the alarm.
-    // Returns a boolean value as a success value.
-    this.handleHomebridgeConfWithAlarm = function(response) {
-        let homebridgeConf = new HomebridgeConf(this.sensor)
-        let config = {
-            alarmEnabled: true,
-            cameraEnabled: true,
-        }
-        homebridgeConf.setup(config, (success) => {
-            response.status(200)
-            response.send(success)
-        })
-    }
-
-    // > [GET] host:port/api/homebridge/conf/cam
-    // Load a homebridge configuration file with the available nodes,
-    // including the camera.
-    // Returns a boolean value as a success value.
-    this.handleHomebridgeConfWithCamera = function(response) {
-        let homebridgeConf = new HomebridgeConf(this.sensor)
-        let config = {
-            alarmEnabled: false,
-            cameraEnabled: true,
-        }
-        homebridgeConf.setup(config, (success) => {
-            response.status(200)
-            response.send(success)
-        })
-    }
-
-    // > [GET] host:port/api/homebridge/conf/full
-    // Load a homebridge configuration file with the available nodes,
-    // including the alarm and the camera.
-    // Returns a boolean value as a success value.
-    this.handleHomebridgeConfFull = function(response) {
-        let homebridgeConf = new HomebridgeConf(this.sensor)
-        let config = {
-            alarmEnabled: true,
-            cameraEnabled: true,
-        }
-        homebridgeConf.setup(config, (success) => {
-            response.status(200)
-            response.send(success)
-        })
-    }
-
-    // ------------
     // Nodes
     // ------------
 
@@ -160,7 +92,6 @@ module.exports = function() {
 
     // > [GET] host:port/api/node/:id
     // Get the status of a node by it's id.
-    // This will be the method used by homebridge.
     // Will be called only from localhost.
     this.handleNodeStatus = function(id, response) {
         this.sensor.getNodeStatus(id, (status) => {

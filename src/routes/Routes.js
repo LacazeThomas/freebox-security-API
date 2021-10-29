@@ -54,15 +54,6 @@ module.exports = function() {
                 }
             })
         })
-        self.router.get('/homebridge/conf/alarm', function(req, res) {
-            self.controller.handleHomebridgeConfWithAlarm(res)
-        })
-        self.router.get('/homebridge/conf/cam', function(req, res) {
-            self.controller.handleHomebridgeConfWithCamera(res)
-        })
-        self.router.get('/homebridge/conf/full', function(req, res) {
-            self.controller.handleHomebridgeConfFull(res)
-        })
         self.router.get('/refresh/:timeout', function(req, res) {
             let timeout = parseInt(req.params.timeout, 10)
             self.controller.handleTimeoutUpdate(timeout, res)
@@ -105,12 +96,6 @@ module.exports = function() {
         })
         self.router.get('/log/server/error', function(req, res) {
             self.controller.handleServerErrorLogs(res)
-        })
-        self.router.get('/log/homebridge', function(req, res) {
-            self.controller.handleHomebridgeLogs(res)
-        })
-        self.router.get('/log/homebridge/error', function(req, res) {
-            self.controller.handleHomebridgeErrorLogs(res)
         })
         self.router.get('/log/clear', function(req, res) {
             self.controller.handleCleanLogs(res)

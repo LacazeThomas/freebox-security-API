@@ -6,12 +6,7 @@ require('better-logging')(console, {
 	format: ctx => `${ctx.time24 + ctx.date} ${ctx.msg}`
 })
 
-process.title = "homebridge-freebox-home"
-
-// process.on('uncaughtException', function (err) {
-// 	console.log(err)
-// 	process.exit(1)
-// })
+process.title = "Freebox-security-API"
 
 const port = 8888
 

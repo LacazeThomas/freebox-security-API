@@ -1,7 +1,7 @@
 {
   "name": "freebox-home-api",
   "version": "1.0.0",
-  "description": "A freebox bridge for homebridge compatibility of the Freebox Pack Secu.",
+  "description": "A freebox API bridge for Freebox Pack Secu.",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js"
