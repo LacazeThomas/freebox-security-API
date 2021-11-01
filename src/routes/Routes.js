@@ -91,17 +91,5 @@ module.exports = function() {
             self.checkUnauthorizedRequest(req, res)
             self.controller.handleAlarmState(res)
         })
-        self.router.get('/log/server', function(req, res) {
-            self.controller.handleServerLogs(res)
-        })
-        self.router.get('/log/server/error', function(req, res) {
-            self.controller.handleServerErrorLogs(res)
-        })
-        self.router.get('/log/clear', function(req, res) {
-            self.controller.handleCleanLogs(res)
-        })
-        self.router.get('/version', function(req, res) {
-            self.controller.handleGetVersion(res)
-        })
     }
 }
