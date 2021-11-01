@@ -37,7 +37,7 @@ steps:
     - master
     - main
 
-- name: publish
+- name: publish develop
   image: plugins/docker
   settings:
     tags: develop
