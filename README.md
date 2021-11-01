@@ -5,17 +5,37 @@ A NodeJS gateway to interface the Freebox Home API and curl action, setting up a
 
 - **✅ 100 % free and open-source**
 
-- **✅ No need CI**
+- **✅ Active/Desactive alarm**
 
-- **✅ Generate most used editors**
-
-- **✅ Generate most used programming languages**
-
-- **✅ Generate most used operating systems**
+- **✅ Get status from all your devices**
 
 - **✅ Self-hosted**
 
 ## 🔧 Endpoint availables
+
+Few endpoint are exposed in this API such as :
+
+| Endpoint             | Description                                                        |
+| -------------------- | ------------------------------------------------------------------ |
+| /api/node/{id}       | Get the status of a node by it's id.                               |
+| /api/node/list       | Returns the list of the available nodes (only ids).                |
+| /api/ping            | Will just if tell the server is up.                                |
+| /api/fbx/rights      | Will return a boolean value to show wether the app has home acces. |
+| /api/fbx/auth        | Will return a boolean value to show wether the app has been auth.  |
+| /api/refresh/:id     | Update the refresh timeout for the node.                           |
+| /api/alarm/main      | Will turn on primary alarm.                                        |
+| /api/alarm/target    | Will return futher state of alarm.                                 |
+| /api/alarm/secondary | Will turn on secondary alarm.                                      |
+| /api/alarm/state     | Will return current state of alarm (strange behavior).             |
+| /api/alarm/off       | Will turn off alarm.                                               |
+
+## 🔧 Alarm States
+
+1 = armed
+0 = not armed
+2 = secondary alarm
+4 = Alert 
+
 
 ## 🛠️ Installation Steps
 
@@ -54,7 +74,7 @@ switch:
     switches:
       alarm:
         command_on: "curl -X GET http://localhost:8888/api/alarm/main"
-        command_off: "curl -X GET http://localhost:8888/api/alarm/home"
+        command_off: "curl -X GET http://localhost:8888/api/alarm/off"
         command_state: "curl -X GET http://localhost:8888/api/alarm/target"
         value_template: '{{ value == "1" }}'
 
@@ -68,15 +88,6 @@ binary_sensor:
 ```
 
 To get your node id make a `curl -X GET http://localhost:8888/api/node/list`
-
-## Available endpoints
-Few endpoint are exposed in this API such as :
-
-| Endpoint                   | Description                                                                                       |
-| -------------------------- | ------------------------------------------------------------------------------------------------- |
-| /api/node/{id}             | Will return the state of a specified node right now.*                                             |
-
-Check the wiki for a complete documentation.
 
 ## Limitations
 The current Freebox API do not allow the request of rights for an App.
