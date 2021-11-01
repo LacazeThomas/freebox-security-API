@@ -79,10 +79,6 @@ module.exports = function() {
             self.checkUnauthorizedRequest(req, res)
             self.controller.handleAlarmOff(res)
         })
-        self.router.get('/alarm/home', function(req, res) {
-            self.checkUnauthorizedRequest(req, res)
-            self.controller.handleAlarmOff(res)
-        })
         self.router.get('/alarm/target', function(req, res) {
             self.checkUnauthorizedRequest(req, res)
             self.controller.handleAlarmTarget(res)
