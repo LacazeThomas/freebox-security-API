@@ -5,9 +5,9 @@ A NodeJS gateway to interface the Freebox Home API and curl action, setting up a
 
 - **✅ 100 % free and open-source**
 
-- **✅ Active/Desactive alarm**
+- **✅ Engage/Disengage primary and secondary alarm**
 
-- **✅ Get status from all your devices**
+- **✅ Get door/motion/alarm status**
 
 - **✅ Self-hosted**
 
@@ -31,10 +31,10 @@ Few endpoint are exposed in this API such as :
 
 ## 🔧 Alarm States
 
-1 = armed
-0 = not armed
-2 = secondary alarm
-4 = Alert 
+- 1: armed
+- 0: not armed
+- 2: secondary alarm
+- 4: Alert 
 
 
 ## 🛠️ Installation Steps
@@ -61,37 +61,81 @@ $ docker run \
 
 ### 💻 Option 3: Run from source
 
+You need to install NodeJS, npm and pm2.
 
-🌟 You are all set!
+```bash
+$ git clone https://github.com/LacazeThomas/freebox-security-API.git
+$ cd freebox-security-API/src
+$ pm2 start index.js
+```
 
-## Configuration with homeassistant
+More information [here](https://pm2.keymetrics.io/docs/usage/quick-start/)
 
-Calls to the motion sensor API work. But my sensor doesn't work anymore 
+## 📝 Configuration
+
+After starting the program, you need to give him the right to access your Freebox Home API.
+
+```bash
+$ curl http://localhost:8888/api/fbx/auth
+```
+You box will ask you to give the app access to your Freebox Home API. And your log in Freebox-security-API will show you :
+
+```
+[13:32:41][11/1/2021] [!] Pending access, check your box
+[13:32:43][11/1/2021] [i] Trying again, attempt 1
+[13:32:43][11/1/2021] [!] Pending access, check your box
+[13:32:45][11/1/2021] [i] Trying again, attempt 2
+[13:32:45][11/1/2021] [!] Pending access, check your box
+[13:32:47][11/1/2021] [i] Trying again, attempt 3
+[13:32:47][11/1/2021] [!] Pending access, check your box
+[13:32:49][11/1/2021] [i] Trying again, attempt 4
+[13:32:49][11/1/2021] [!] Pending access, check your box
+[13:32:51][11/1/2021] [i] Trying again, attempt 5
+[13:32:51][11/1/2021] [!] Pending access, check your box
+```
+
+The current Freebox API do not allow the request of rights for an App.
+So when you start the server, make that, after having allowed the app (by taping the ✅ on the box's display), to log into freebox OS (http://mafreebox.freebox.fr/), go into "Paramètres de la Freebox" > "Gestion des accès" and allow the "Freebox-security-API" app to access *Gestion de l'alarme et maison connectée* (you can disable other unused rights).
+
+After that, you can start the configuration of homeassistant. Please check that your log is all good
+
+```
+```
+
+
+
+### Configuration with homeassistant
+
+```bash
+$ curl -X GET http://localhost:8888/api/node/list
+> [{"id":58,"type":"alarm"},{"id":65,"type":"camera"},{"id":67,"type":"dws"}]
+```
+
+My alarm ID is 58, my camera ID is 65 and my door sensor is 67.
+No need to use ID with alarm and camera
+
+In this case my homeassistant configuration is : 
 
 ```
 switch:
   - platform: command_line
     switches:
       alarm:
-        command_on: "curl -X GET http://localhost:8888/api/alarm/main"
-        command_off: "curl -X GET http://localhost:8888/api/alarm/off"
-        command_state: "curl -X GET http://localhost:8888/api/alarm/target"
+        command_on: "curl -X GET http://localhost:8888/api/alarm/main 2>/dev/null"
+        command_off: "curl -X GET http://localhost:8888/api/alarm/off 2>/dev/null"
+        command_state: "curl -X GET http://localhost:8888/api/alarm/target 2>/dev/null"
         value_template: '{{ value == "1" }}'
 
 binary_sensor:
   - platform: command_line
-    command: "curl -X GET http://localhost:8888/api/node/59"
-    name: "sensor door"
+    command: "curl -X GET http://localhost:8888/api/node/67 2>/dev/null"
+    name: "ouverture porte"
     payload_on: "1"
     payload_off: "0"
-    device_class: "door"        
+    device_class: "door"    
 ```
 
-To get your node id make a `curl -X GET http://localhost:8888/api/node/list`
-
-## Limitations
-The current Freebox API do not allow the request of rights for an App.
-So when you start the server, make that, after having allowed the app (by taping the ✅ on the box's display), to log into freebox OS (http://mafreebox.freebox.fr/), go into "Paramètres de la Freebox" > "Gestion des accès" and allow the "Freebox-security-API" app to access *Gestion de l'alarme et maison connectée* (you can disable other unused rights).
+🌟 You are all set!
 
 ## Dockerfile
 <a href="https://github.com/LacazeThomas/freebox-security-API/blob/main/Dockerfile">Dockerfile</a>
