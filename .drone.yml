@@ -41,7 +41,6 @@ steps:
   image: plugins/docker
   settings:
     tags: develop
-    auto_tag: true
     repo: thomaslacaze/freebox-security-api
     username:
       from_secret: docker_username
