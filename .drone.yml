@@ -36,4 +36,20 @@ steps:
     branch:
     - master
     - main
+
+- name: publish
+  image: plugins/docker
+  settings:
+    tags: develop
+    auto_tag: true
+    repo: thomaslacaze/freebox-security-api
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    branch:
+    - develop
 ###
+
+
