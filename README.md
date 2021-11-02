@@ -78,31 +78,34 @@ After starting the program, you need to give him the right to access your Freebo
 ```bash
 $ curl http://localhost:8888/api/fbx/auth
 ```
-You box will ask you to give the app access to your Freebox Home API. And your log in Freebox-security-API will show you :
+You box will ask you to give the app access to your Freebox Home API (taping the ✅ on the box's display) :
 
 ```
 [13:32:41][11/1/2021] [!] Pending access, check your box
 [13:32:43][11/1/2021] [i] Trying again, attempt 1
 [13:32:43][11/1/2021] [!] Pending access, check your box
 [13:32:45][11/1/2021] [i] Trying again, attempt 2
-[13:32:45][11/1/2021] [!] Pending access, check your box
-[13:32:47][11/1/2021] [i] Trying again, attempt 3
-[13:32:47][11/1/2021] [!] Pending access, check your box
-[13:32:49][11/1/2021] [i] Trying again, attempt 4
-[13:32:49][11/1/2021] [!] Pending access, check your box
-[13:32:51][11/1/2021] [i] Trying again, attempt 5
-[13:32:51][11/1/2021] [!] Pending access, check your box
 ```
 
-The current Freebox API do not allow the request of rights for an App.
-So when you start the server, make that, after having allowed the app (by taping the ✅ on the box's display), to log into freebox OS (http://mafreebox.freebox.fr/), go into "Paramètres de la Freebox" > "Gestion des accès" and allow the "Freebox-security-API" app to access *Gestion de l'alarme et maison connectée* (you can disable other unused rights).
-
-After that, you can start the configuration of homeassistant. Please check that your log is all good
+Give the right permission to API, you need to log into freebox OS (http://mafreebox.freebox.fr/), go into "Paramètres de la Freebox" > "Gestion des accès" and allow the "Freebox-security-API" app to access *Gestion de l'alarme et maison connectée* (you can disable other unused rights) :
 
 ```
+[11:48:48][11/2/2021] [!] Insufficient rights to request home api (home). Trying again...
+[11:48:48][11/2/2021] [!] Insufficient rights to request home api (home). Trying again...
 ```
 
 
+After that, you can start the configuration of homeassistant. Please check that your log is all good : 
+
+```
+[11:49:22][11/2/2021] [i] Session started
+[11:49:22][11/2/2021] [i] Updated credentials
+```
+
+Try to engage primary alarm to test :
+```bash
+curl -X GET http://localhost:8888/api/alarm/main
+```
 
 ### Configuration with homeassistant
 
