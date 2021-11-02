@@ -15,19 +15,19 @@ A NodeJS gateway to interface the Freebox Home API and curl action, setting up a
 
 Few endpoint are exposed in this API such as :
 
-| Endpoint             | Description                                                        |
-| -------------------- | ------------------------------------------------------------------ |
-| /api/node/{id}       | Get the status of a node by it's id.                               |
-| /api/node/list       | Returns the list of the available nodes (only ids).                |
-| /api/ping            | Will just if tell the server is up.                                |
-| /api/fbx/rights      | Will return a boolean value to show wether the app has home acces. |
-| /api/fbx/auth        | Will return a boolean value to show wether the app has been auth.  |
-| /api/refresh/:id     | Update the refresh timeout for the node.                           |
-| /api/alarm/main      | Will turn on primary alarm.                                        |
-| /api/alarm/target    | Will return futher state of alarm.                                 |
-| /api/alarm/secondary | Will turn on secondary alarm.                                      |
-| /api/alarm/state     | Will return current state of alarm (strange behavior).             |
-| /api/alarm/off       | Will turn off alarm.                                               |
+| Endpoint             | Description                                                         |
+| -------------------- | ------------------------------------------------------------------- |
+| /api/node/{id}       | Get the status of a node by it's id.                                |
+| /api/node/list       | Returns the list of the available nodes (only ids).                 |
+| /api/ping            | Will just if tell the server is up.                                 |
+| /api/fbx/rights      | Will return a boolean value to show wether the app has home access. |
+| /api/fbx/auth        | Will return a boolean value to show wether the app has been auth.   |
+| /api/refresh/:id     | Update the refresh timeout for the node.                            |
+| /api/alarm/main      | Will turn on primary alarm.                                         |
+| /api/alarm/target    | Will return futher state of alarm.                                  |
+| /api/alarm/secondary | Will turn on secondary alarm.                                       |
+| /api/alarm/state     | Will return current state of alarm (strange behavior).              |
+| /api/alarm/off       | Will turn off alarm.                                                |
 
 ## 🔧 Alarm States
 
@@ -104,7 +104,7 @@ After that, you can start the configuration of homeassistant. Please check that 
 
 Try to engage primary alarm to test :
 ```bash
-curl -X GET http://localhost:8888/api/alarm/main
+$ curl -X GET http://localhost:8888/api/alarm/main
 ```
 
 ### Configuration with homeassistant
